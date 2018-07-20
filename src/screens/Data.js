@@ -19,6 +19,7 @@ class Data extends Component {
     componentWillMount() {
         console.log(this.props.resultData);
         if (this.props.resultData === 'error' || !this.props.resultData) {
+            this.props.dispatch({text: 'front', type: 'ADD_REDIRECT'});
            this.setState({error:true})
         }
     }

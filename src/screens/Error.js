@@ -68,6 +68,6 @@ import {connect} from "react-redux";
 }
 
 const mapStateToProps = (state) => ({
-    retry: state.retry,
+    redirect: state.redirect,
 });
 export default connect(mapStateToProps)(Error);

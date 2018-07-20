@@ -34,17 +34,32 @@ function postFrontImage(instanceID, file) {
     });
 }
 
-function getFrontImage(instanceID) {
+function getClassification(instanceID){
     return request({
-        url: '/AssureIDService/Document/' + instanceID + '/Image?side=0&light=0',
+        url: '/AssureIDService/Document/' + instanceID + '/Classification',
+        method: 'GET',
+    });
+}
+
+function postBackImage(instanceID, file) {
+    return request({
+        url: '/AssureIDService/Document/' + instanceID + '/Image?side=1&light=0&metrics=true',
+        method: 'POST',
+        data: file
+    });
+}
+
+function getImage(instanceID, side) {
+    return request({
+        url: '/AssureIDService/Document/' + instanceID + '/Image?side='+side+'&light=0',
         method: 'GET',
         responseType: 'arraybuffer'
     });
 }
 
-function getImageQualityMetric(instanceID) {
+function getImageQualityMetric(instanceID,side) {
     return request({
-        url: '/AssureIDService/Document/' + instanceID + '/Image/Metrics?side=0&light=0',
+        url: '/AssureIDService/Document/' + instanceID + '/Image/Metrics?side='+side+'&light=0',
         method: 'GET',
     });
 }
@@ -74,7 +89,7 @@ function getResults(instanceID) {
 
 
 const ApiService = {
-    getDocInstance, postFrontImage, getFrontImage, getImageQualityMetric, getFaceImage, getResults, getSignatureImage
+    getDocInstance,  postFrontImage, getClassification, getImage, postBackImage, getImageQualityMetric, getFaceImage, getResults, getSignatureImage,
 };
 
 export default ApiService;

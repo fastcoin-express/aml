@@ -3,7 +3,7 @@ import {Switch, Route, BrowserRouter} from 'react-router-dom';
 import {PersistGate} from 'redux-persist/es/integration/react';
 import {Provider} from 'react-redux';
 import CaptureId from './screens/CaptureId';
-import Processing from './screens/Processing';
+import BackId from './screens/BackId';
 import Selfie from './screens/Selfie';
 import Data from './screens/Data';
 import Error from './screens/Error';
@@ -18,7 +18,7 @@ class App extends Component {
                         <BrowserRouter>
                             <Switch>
                                 <Route props={this.props} path="/" exact component={CaptureId}/>
-                                <Route props={this.props} path="/processing" exact component={Processing}/>
+                                <Route props={this.props} path="/back" exact component={BackId}/>
                                 <Route props={this.props} path="/selfie" exact component={Selfie}/>
                                 <Route props={this.props} path="/data" exact component={Data}/>
                                 <Route props={this.props} path="/error" exact component={Error}/>

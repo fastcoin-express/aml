@@ -260,6 +260,24 @@ img {
     animation: rotating 1s linear infinite;
 }
 
+
+.findingIcon {
+    width: 60px;
+    height: auto;
+    position: absolute;
+    top:calc(50% - 30px);
+    -webkit-transform-origin: center center;
+    -moz-transform-origin: center center;
+    -ms-transform-origin: center center;
+    -o-transform-origin: center center;
+    transform-origin: center center;
+    -webkit-animation: movefinder 1.5s linear infinite alternate;
+    -moz-animation: movefinder 1.5s linear infinite alternate;
+    -ms-animation: rmovefinder 1.5s linear infinite alternate;
+    -o-animation: movefinder 1.5s linear infinite alternate;
+    animation: movefinder 1.5s linear infinite alternate;
+}
+
 @-webkit-keyframes rotating /* Safari and Chrome */
 {
     from {
@@ -288,6 +306,28 @@ img {
         -webkit-transform: rotate(360deg);
         -o-transform: rotate(360deg);
         transform: rotate(360deg);
+    }
+}
+
+
+@-webkit-keyframes movefinder /* Safari and Chrome */
+{
+    from {
+        left: calc(20% - 30px);
+
+    }
+    to {
+        left: calc(80% - 30px);
+    }
+}
+
+@keyframes movefinder {
+    from {
+        left: calc(20% - 30px);
+
+    }
+    to {
+        left: calc(80% - 30px);
     }
 }
 

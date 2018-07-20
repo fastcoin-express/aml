@@ -32,29 +32,9 @@ class CaptureId extends Component {
         if(this.props.redirect){
             this.textInput.current.click();
         }
-        ApiService
-            .getDocInstance()
-            .then(res => {
-                console.log(res);
-                this.props.dispatch({text: res, type: 'ADD_INSTANCE_ID'});
-                this.setState({instanceID: res});
-            })
-            .catch(err => {
-                console.log(err);
-            })
     }
 
     onRetry() {
-        ApiService
-            .getDocInstance()
-            .then(res => {
-                console.log(res);
-                this.props.dispatch({text: res, type: 'ADD_INSTANCE_ID'});
-                this.setState({loaded: false, error: false, instanceID: res});
-            })
-            .catch(err => {
-                console.log(err);
-            });
         this.setState({processing: false}, () => {
             this.textInput.current.click();
         });
@@ -107,14 +87,14 @@ class CaptureId extends Component {
                     var dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
 
                     ApiService
-                        .postFrontImage(self.state.instanceID, self.dataURLtoBlob(dataurl))
+                        .postBackImage(self.props.instanceID, self.dataURLtoBlob(dataurl))
                         .then(response => {
                             self.setState({loaded: true});
                             console.log('sent'); //redirect to processing
                         })
                         .catch(error => {
-                            self.props.dispatch({text: 'front', type: 'ADD_REDIRECT'});
                             self.setState({error: true});
+                            self.props.dispatch({text: 'back', type: 'ADD_REDIRECT'});
                             console.log('asd');
                         })
 
@@ -137,16 +117,16 @@ class CaptureId extends Component {
         return (
             <div>
                 {(this.state.processing) ?
-                    <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={0}/>
+                    <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={1}/>
                     :
                     <div>
                         <Header />
                         <div className={'content'}>
 
-                            <p className={'title'}>Upload a clear picture of the front of your ID card.</p>
+                            <p className={'title'}>Upload a clear picture of the back of your ID card.</p>
 
                             <img alt='idscango' className={'image'}
-                                 src={require('../assets/images/illustration1@2x.png')}/>
+                                 src={require('../assets/images/IDback@2x.png')}/>
 
                             <input type="file" accept="image/*" capture="environment" id="camera"
                                    value={this.state.inputValue}//for selfie capture="user"
@@ -154,7 +134,7 @@ class CaptureId extends Component {
                                    onChange={this.updateInputValue.bind(this)}
                                    ref={this.textInput}/>
                             <label htmlFor="camera" className={'buttonBg'}>
-                                <p className={'buttonBgText'}>Capture ID/Passport</p>
+                                <p className={'buttonBgText'}>Capture ID</p>
                             </label>
 
                         </div>
