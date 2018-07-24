@@ -21,7 +21,7 @@ function getDocInstance() {
             "ImageCroppingMode": 3,
             "ManualDocumentType": null,
             "ProcessMode": 0,
-            "SubscriptionId": "c0232aba-54ac-48ae-b670-c7e215dadb49"
+            "SubscriptionId": window.env.SUBSCRIPTION_ID
         }
     });
 }
@@ -89,7 +89,15 @@ function getResults(instanceID) {
 
 
 const ApiService = {
-    getDocInstance,  postFrontImage, getClassification, getImage, postBackImage, getImageQualityMetric, getFaceImage, getResults, getSignatureImage,
+    getDocInstance,
+    postFrontImage,
+    getClassification,
+    getImage,
+    postBackImage,
+    getImageQualityMetric,
+    getFaceImage,
+    getResults,
+    getSignatureImage
 };
 
 export default ApiService;

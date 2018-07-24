@@ -1,52 +1,23 @@
 import storage from "redux-persist/es/storage";
-import {persistReducer, persistStore} from "redux-persist";
+import {persistCombineReducers, persistStore} from "redux-persist";
 import {createStore} from 'redux';
+import rootReducer from './rootReducer'
 
 const initialState = {
-    instanceID: 'asdasd',
-    faceMatch: '',
-    resultData: null
-};
-
-const reducerr = (state = initialState, action) => {
-    switch (action.type) {
-        case "ADD_INSTANCE_ID":
-            return {
-                instanceID: action.text,
-                faceMatch: "",
-                resultData: null
-            };
-        case "ADD_FACE_MATCH":
-            return {
-                instanceID: state.instanceID,
-                faceMatch: action.text,
-                resultData: state.resultData
-            };
-        case "ADD_RESULT_DATA":
-            return {
-                instanceID: state.instanceID,
-                faceMatch: state.faceMatch,
-                resultData: action.text
-            };
-        case "ADD_REDIRECT":
-            return {
-                instanceID: state.instanceID,
-                faceMatch: "",
-                resultData: null,
-                redirect: action.text,
-            };
-        default:
-            return state;
+    appReducer: {
+        instanceID: null,
+        faceMatch: null,
+        resultData: null
     }
-}
+};
 
 const config = {
     key: 'idscango',
     storage,
-    whitelist: 'instanceID, faceMatch, resultData'
+    whitelist: 'appReducer'
 };
 
-const reducer = persistReducer(config, (reducerr));
+const reducer = persistCombineReducers(config, rootReducer);
 
 function configureStore() {
     let store = createStore(

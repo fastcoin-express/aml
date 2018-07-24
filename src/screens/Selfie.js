@@ -1,71 +1,77 @@
-import React, {Component} from 'react';
-import "../style/main.css";
+import React, {Component, Fragment} from 'react';
 import {Redirect} from 'react-router-dom';
-import axios from "axios";
 import Header from './Header';
 import ApiService from "../services/api/api";
 import {connect} from "react-redux";
+import FaceMatchService from "../services/api/faceMatch";
 
 class Selfie extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
-            imageB64: '',
             loading: false,
             loaded: false,
             skipStep: false,
-            done:false
+            done: false
         };
-        this.skipStep = this.skipStep.bind(this);
     }
 
     componentDidMount() {
         let instanceID = this.props.instanceID;
+
+        /**
+         * Get results based on instanceID
+         */
+
         ApiService
             .getResults(instanceID)
             .then(res => {
                 var documentObj = res;
-                var base64FaceReformattedImage = 'asd';
-                var base64SignatureReformattedImage = 'asd';
+                var base64FaceReformattedImage = null;
+                var base64SignatureReformattedImage = null;
 
                 if (documentObj.Fields.length > 0) {
+                    /**
+                     * Get face image from Acuant Service
+                     * Get signature image from Acuant Service
+                     */
+                    Promise.all([ApiService.getFaceImage(instanceID), ApiService.getSignatureImage(instanceID)])
+                        .then(result => {
+                            let faceImageResult = result[0],
+                                signatureImageResult = result[1];
+                            /**
+                             * Process data
+                             * @type {Uint8Array}
+                             */
+                            let faceImageResultArray = new Uint8Array(faceImageResult);
+                            let rawFaceImage = '';
+                            let faceImageResultSubArray, chunk = 5000;
+                            for (let i = 0, j = faceImageResultArray.length; i < j; i += chunk) {
+                                faceImageResultSubArray = faceImageResultArray.subarray(i, i + chunk);
+                                rawFaceImage += String.fromCharCode.apply(null, faceImageResultSubArray);
+                            }
 
+                            let signatureImageResultArray = new Uint8Array(signatureImageResult);
+                            let rawSignatureImage = '';
+                            let signatureImageResultSubArray;
+                            for (let i = 0, j = signatureImageResultArray.length; i < j; i += chunk) {
+                                signatureImageResultSubArray = signatureImageResultArray.subarray(i, i + chunk);
+                                rawSignatureImage += String.fromCharCode.apply(null, signatureImageResultSubArray);
+                            }
 
-                    Promise.all([
-                        ApiService
-                            .getFaceImage(instanceID)
-                            .then(result => {
-                                var arr = new Uint8Array(result);
-                                var raw = '';
-                                var i, j, subArray, chunk = 5000;
-                                for (i = 0, j = arr.length; i < j; i += chunk) {
-                                    subArray = arr.subarray(i, i + chunk);
-                                    raw += String.fromCharCode.apply(null, subArray);
-                                }
+                            base64FaceReformattedImage = btoa(rawFaceImage);
+                            base64SignatureReformattedImage = btoa(rawSignatureImage);
 
-                                base64FaceReformattedImage = btoa(raw);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            }),
-                        ApiService
-                            .getSignatureImage(instanceID)
-                            .then(result => {
-                                var arr = new Uint8Array(result);
-                                var raw = '';
-                                var i, j, subArray, chunk = 5000;
-                                for (i = 0, j = arr.length; i < j; i += chunk) {
-                                    subArray = arr.subarray(i, i + chunk);
-                                    raw += String.fromCharCode.apply(null, subArray);
-                                }
+                            if (!base64FaceReformattedImage.length || !base64SignatureReformattedImage.length) {
+                                throw new Error('Could not process images');
+                            }
 
-                                base64SignatureReformattedImage = btoa(raw);
-                            })
-                            .catch(error => {
-                                console.log(error);
-                            })])
-                        .then(success => {
                             let obj = {};
+
+                            /**
+                             * Pass processed data to our data object
+                             */
 
                             documentObj.Fields.map(field => {
                                 if (field.Name === "Photo") {
@@ -76,12 +82,14 @@ class Selfie extends Component {
                                     obj[field.Name] = field.Value;
                                 }
                             });
+
                             let type = 1;
-                            let idAuthentication = '';
+                            let idAuthentication = null;
+
                             res.Alerts.map(alert => {
-                                console.log(alert);
                                 if (alert.Result !== 1) type = alert.Result;
                             });
+
                             switch (type) {
                                 case 2 :
                                     idAuthentication = 'Failed';
@@ -99,9 +107,11 @@ class Selfie extends Component {
                                     idAuthentication = 'Passed';
                                     break;
                             }
+
                             obj['Authentication'] = idAuthentication;
 
-                            this.props.dispatch({text: obj, type: 'ADD_RESULT_DATA'});
+                            this.props.dispatch({payload: obj, type: 'ADD_RESULT_DATA'});
+
                             this.setState({
                                 faceImage: base64FaceReformattedImage,
                                 loaded: true,
@@ -109,14 +119,13 @@ class Selfie extends Component {
 
                         })
                         .catch(err => {
-                            console.log(err);
                             this.setState({loaded:true});
-                            this.props.dispatch({text: 'error', type: 'ADD_RESULT_DATA'});
+                            this.props.dispatch({payload: 'error', type: 'ADD_RESULT_DATA'});
                         });
 
                 } else {
                     this.setState({loaded:true});
-                    this.props.dispatch({text: 'error', type: 'ADD_RESULT_DATA'});
+                    this.props.dispatch({payload: 'error', type: 'ADD_RESULT_DATA'});
                 }
             })
             .catch(err => {
@@ -162,32 +171,21 @@ class Selfie extends Component {
                 ctx = canvas.getContext("2d");
                 ctx.drawImage(img, 0, 0, width, height);
 
-                var dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
-                var selfie = dataurl.split(",")[1];
+                let dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
+                let selfie = dataurl.split(",")[1];
+
                 self.setState({loading: true});
 
-                axios({
-                    method: 'post',
-                    url: 'https://frm.acuant.net/api/v1/facematch',
-                    data: {
-                        'Data': {
-                            'ImageOne': self.state.faceImage,
-                            'ImageTwo': selfie
-                        },
-                        'Settings': {
-                            'SubscriptionId': 'c0232aba-54ac-48ae-b670-c7e215dadb49'
-                        }
+                FaceMatchService.processFaceMatch({
+                    'Data': {
+                        'ImageOne': self.state.faceImage,
+                        'ImageTwo': selfie
                     },
-                    headers: {
-                        'Authorization': 'Basic YW5kcmVpQG9rYXBpc3R1ZGlvLmNvbTp6NmswdmhrYjRnMmJkMmFj',
-                        'Accept': 'application/json;charset=utf-8',
-                        'Content-Type': 'application/json;charset=utf-8',
+                    'Settings': {
+                        'SubscriptionId': window.env.SUBSCRIPTION_ID
                     }
-
-                })
-                    .then(res => {
-                        console.log(res);
-                        self.props.dispatch({text: res.data.Score, type: 'ADD_FACE_MATCH'});
+                }).then(res => {
+                        self.props.dispatch({payload: res.data.Score, type: 'ADD_FACE_MATCH'});
                         self.setState({loaded: true, done:true});
                     })
                     .catch(err => {
@@ -200,20 +198,13 @@ class Selfie extends Component {
         };
     }
 
-    skipStep(){
-        this.setState({
-            skipStep:true
-        })
-    }
-
     render() {
         if (this.state.loaded && (this.state.skipStep || this.state.done )) {
             return <Redirect to='/data'/>
         }
         return (
-            <div>
+            <Fragment>
                 <Header />
-
                 {(this.state.loading || this.state.skipStep) ?
                     <div className={'contentCenter'}>
                         <p className={'title'}>Processing...</p>
@@ -225,7 +216,6 @@ class Selfie extends Component {
                         </div>
                     </div>
                     :
-
                     <div className={'content'}>
                         <p className={'title'}>Take a selfie image using the front camera of your device.</p>
                         <img alt='idscango' className={'image'} src={require('../assets/images/illustration2@3x.png')}/>
@@ -240,19 +230,19 @@ class Selfie extends Component {
                         <label htmlFor="camera" className={'buttonBg'}>
                             <p className={'buttonBgText'}>Take selfie image</p>
                         </label>
-                        <div className={'buttonBd'} onClick={this.skipStep}>
+                        <div className={'buttonBd'} onClick={() => {this.setState({skipStep: true})}}>
                             <p className={'buttonBdText'}>Skip this step</p>
                         </div>
                     </div>
                 }
 
-            </div>
+            </Fragment>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    instanceID: state.instanceID,
-    faceMatch: state.faceMatch,
+    instanceID: state.appReducer.instanceID,
+    faceMatch: state.appReducer.faceMatch,
 });
 export default connect(mapStateToProps)(Selfie);

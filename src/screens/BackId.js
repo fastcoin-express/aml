@@ -1,6 +1,5 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import "../style/main.css";
 import Header from './Header';
 import ApiService from "../services/api/api";
 import Processing from "./Processing"
@@ -35,7 +34,9 @@ class CaptureId extends Component {
     }
 
     onRetry() {
-        this.setState({processing: false}, () => {
+        this.setState({
+                processing: false
+            }, () => {
             this.textInput.current.click();
         });
     }
@@ -47,8 +48,8 @@ class CaptureId extends Component {
         reader.onload = (e) => {
 
             self.setState({processing: true});
-            if (window.File && window.FileReader && window.FileList && window.Blob) {
 
+            if (window.File && window.FileReader && window.FileList && window.Blob) {
 
                 var img = document.createElement("img");
                 img.src = e.target.result;
@@ -90,57 +91,43 @@ class CaptureId extends Component {
                         .postBackImage(self.props.instanceID, self.dataURLtoBlob(dataurl))
                         .then(response => {
                             self.setState({loaded: true});
-                            console.log('sent'); //redirect to processing
                         })
                         .catch(error => {
-                            self.setState({error: true});
-                            self.props.dispatch({text: 'back', type: 'ADD_REDIRECT'});
-                            console.log('asd');
+                            self.setState({
+                                error: true
+                            });
+                            self.props.dispatch({payload: 'back', type: 'ADD_REDIRECT'});
                         })
 
                 };
             } else {
                 alert('The File APIs are not fully supported in this browser.');
             }
-
-
         };
         reader.readAsDataURL(file.files[0]);
     }
 
     render() {
 
-        if (this.state.error) {
-            return <Redirect to='/error'/>;
-        }
-
+        if (this.state.error) return <Redirect to='/error'/>;
+        if (this.state.processing) return <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={1}/>;
         return (
-            <div>
-                {(this.state.processing) ?
-                    <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={1}/>
-                    :
-                    <div>
-                        <Header />
-                        <div className={'content'}>
-
-                            <p className={'title'}>Upload a clear picture of the back of your ID card.</p>
-
-                            <img alt='idscango' className={'image'}
-                                 src={require('../assets/images/IDback@2x.png')}/>
-
-                            <input type="file" accept="image/*" capture="environment" id="camera"
-                                   value={this.state.inputValue}//for selfie capture="user"
-                                   className={'inputHidden'}
-                                   onChange={this.updateInputValue.bind(this)}
-                                   ref={this.textInput}/>
-                            <label htmlFor="camera" className={'buttonBg'}>
-                                <p className={'buttonBgText'}>Capture ID</p>
-                            </label>
-
-                        </div>
-                    </div>
-                }
-            </div>
+            <Fragment>
+                <Header />
+                <div className='content'>
+                    <p className='title'>Upload a clear picture of the back of your ID card.</p>
+                    <img alt='idscango' className='image' src={require('../assets/images/IDback@2x.png')}/>
+                    <input type="file" accept="image/*" capture="environment" id="camera"
+                           value={this.state.inputValue}
+                           className={'inputHidden'}
+                           onChange={this.updateInputValue.bind(this)}
+                           ref={this.textInput}
+                    />
+                    <label htmlFor="camera" className={'buttonBg'}>
+                        <p className='buttonBgText'>Capture ID</p>
+                    </label>
+                </div>
+            </Fragment>
 
 
         );
@@ -148,7 +135,7 @@ class CaptureId extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    instanceID: state.instanceID,
+    instanceID: state.appReducer.instanceID,
     redirect: state.redirect
 });
 export default connect(mapStateToProps)(CaptureId);

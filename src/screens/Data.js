@@ -1,10 +1,8 @@
-import React, {Component} from 'react';
-import "../style/main.css";
+import React, {Component, Fragment} from 'react';
 import {Redirect} from "react-router-dom";
 import Header from './Header';
 import moment from "moment";
 import {connect} from "react-redux";
-
 
 class Data extends Component {
     constructor(props) {
@@ -17,9 +15,8 @@ class Data extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props.resultData);
         if (this.props.resultData === 'error' || !this.props.resultData) {
-            this.props.dispatch({text: 'front', type: 'ADD_REDIRECT'});
+            this.props.dispatch({payload: 'front', type: 'ADD_REDIRECT'});
            this.setState({error:true})
         }
     }
@@ -30,10 +27,10 @@ class Data extends Component {
         }
         if (!this.state.loading) {
             var face = (<img alt='idscango' className={'profile'} src={this.props.resultData['Photo']}/>);
-            var signature = (<img alt='idscango' className={'signiture'} src={this.props.resultData['Signature']}/>);
+            var signature = (<img alt='idscango' className={'signature'} src={this.props.resultData['Signature']}/>);
         }
         return (
-            <div>
+            <Fragment>
                 <Header />
                 {this.state.loading ?
                     <div className={'contentCenter'}>
@@ -121,15 +118,15 @@ class Data extends Component {
                     </div>
 
                 }
-            </div>
+            </Fragment>
         );
     }
 }
 
 
 const mapStateToProps = (state) => ({
-    instanceID: state.instanceID,
-    faceMatch: state.faceMatch,
-    resultData: state.resultData
+    instanceID: state.appReducer.instanceID,
+    faceMatch: state.appReducer.faceMatch,
+    resultData: state.appReducer.resultData
 });
 export default connect(mapStateToProps)(Data);

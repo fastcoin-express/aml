@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
-import "../style/main.css";
 import Header from './Header';
 import ApiService from "../services/api/api";
 import Processing from "./Processing"
 import {Redirect} from "react-router-dom";
 
 class CaptureId extends Component {
+
     constructor(props) {
         super(props);
         this.state = {
@@ -15,32 +15,34 @@ class CaptureId extends Component {
             error: false,
             instanceID: ''
         };
+
         this.textInput = React.createRef();
         this.onRetry = this.onRetry.bind(this);
     }
 
     dataURLtoBlob(dataURL) {
-        var binary = atob(dataURL.split(',')[1]);
-        var array = [];
-        for (var i = 0; i < binary.length; i++) {
+        let binary = atob(dataURL.split(',')[1]);
+        let array = [];
+        for (let i = 0; i < binary.length; i++) {
             array.push(binary.charCodeAt(i));
         }
         return new Blob([new Uint8Array(array)], {type: 'image/jpg'});
     }
 
     componentDidMount() {
+
         if(this.props.redirect){
             this.textInput.current.click();
         }
+
         ApiService
             .getDocInstance()
             .then(res => {
-                console.log(res);
-                this.props.dispatch({text: res, type: 'ADD_INSTANCE_ID'});
+                this.props.dispatch({payload: res, type: 'ADD_INSTANCE_ID'});
                 this.setState({instanceID: res});
             })
             .catch(err => {
-                console.log(err);
+                throw new Error(err);
             })
     }
 
@@ -48,8 +50,7 @@ class CaptureId extends Component {
         ApiService
             .getDocInstance()
             .then(res => {
-                console.log(res);
-                this.props.dispatch({text: res, type: 'ADD_INSTANCE_ID'});
+                this.props.dispatch({payload: res, type: 'ADD_INSTANCE_ID'});
                 this.setState({loaded: false, error: false, instanceID: res});
             })
             .catch(err => {
@@ -106,16 +107,13 @@ class CaptureId extends Component {
 
                     var dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
 
-                    ApiService
-                        .postFrontImage(self.state.instanceID, self.dataURLtoBlob(dataurl))
+                    ApiService.postFrontImage(self.state.instanceID, self.dataURLtoBlob(dataurl))
                         .then(response => {
                             self.setState({loaded: true});
-                            console.log('sent'); //redirect to processing
                         })
                         .catch(error => {
-                            self.props.dispatch({text: 'front', type: 'ADD_REDIRECT'});
+                            self.props.dispatch({payload: 'front', type: 'ADD_REDIRECT'});
                             self.setState({error: true});
-                            console.log('asd');
                         })
 
                 };
@@ -129,38 +127,27 @@ class CaptureId extends Component {
     }
 
     render() {
-
-        if (this.state.error) {
-            return <Redirect to='/error'/>;
-        }
-
+        if (this.state.error) return <Redirect to='/error'/>;
+        if (this.state.processing) return <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={0}/>;
         return (
-            <div>
-                {(this.state.processing) ?
-                    <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={0}/>
-                    :
-                    <div>
-                        <Header />
-                        <div className={'content'}>
+            <Fragment>
+                <Header />
+                <div className={'content'}>
+                    <p className={'title'}>Upload a clear picture of the front of your ID card.</p>
+                    <img alt='idscango' className={'image'} src={require('../assets/images/illustration1@2x.png')}/>
+                    <input type="file" accept="image/*" capture="environment" id="camera"
+                           value={this.state.inputValue}
+                           className={'inputHidden'}
+                           onChange={this.updateInputValue.bind(this)}
+                           ref={this.textInput}
+                    />
 
-                            <p className={'title'}>Upload a clear picture of the front of your ID card.</p>
+                    <label htmlFor="camera" className={'buttonBg'}>
+                        <p className={'buttonBgText'}>Capture ID/Passport</p>
+                    </label>
 
-                            <img alt='idscango' className={'image'}
-                                 src={require('../assets/images/illustration1@2x.png')}/>
-
-                            <input type="file" accept="image/*" capture="environment" id="camera"
-                                   value={this.state.inputValue}//for selfie capture="user"
-                                   className={'inputHidden'}
-                                   onChange={this.updateInputValue.bind(this)}
-                                   ref={this.textInput}/>
-                            <label htmlFor="camera" className={'buttonBg'}>
-                                <p className={'buttonBgText'}>Capture ID/Passport</p>
-                            </label>
-
-                        </div>
-                    </div>
-                }
-            </div>
+                </div>
+            </Fragment>
 
 
         );
@@ -168,7 +155,7 @@ class CaptureId extends Component {
 }
 
 const mapStateToProps = (state) => ({
-    instanceID: state.instanceID,
+    instanceID: state.appReducer.instanceID,
     redirect: state.redirect
 });
 export default connect(mapStateToProps)(CaptureId);

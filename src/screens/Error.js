@@ -1,27 +1,29 @@
-import React, {Component} from 'react';
-import "../style/main.css";
+import React, {Component, Fragment} from 'react';
 import {Redirect} from 'react-router-dom';
-import Header from './Header';
 import {connect} from "react-redux";
+import Header from './Header';
 
  class Error extends Component {
-     constructor(props) {
-         super(props);
-         this.state={
-             redirect:false
-         };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            redirect: false
+        };
+
         this.retry = this.retry.bind(this);
-     }
-     retry(){
-         this.props.dispatch({text: true, type: 'ADD_REDIRECT'});
-         this.setState({redirect:true})
-     }
+    }
+
+    retry() {
+        this.props.dispatch({payload: true, type: 'ADD_REDIRECT'});
+        this.setState({redirect:true})
+    }
+
     render() {
-        if (this.state.redirect) {
-            return <Redirect to='/'/>
-        }
+        if (this.state.redirect) return <Redirect to='/'/>
         return (
-            <div>
+            <Fragment>
                 <Header />
                 <div className={'content'}>
                     <div className={'titleWithError'}>
@@ -62,12 +64,12 @@ import {connect} from "react-redux";
                         <p className={'buttonBdText'}>Retry</p>
                     </div>
                 </div>
-            </div>
+            </Fragment>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    redirect: state.redirect,
+    redirect: state.redirect
 });
 export default connect(mapStateToProps)(Error);

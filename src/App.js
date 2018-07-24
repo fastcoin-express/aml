@@ -8,20 +8,21 @@ import Selfie from './screens/Selfie';
 import Data from './screens/Data';
 import Error from './screens/Error';
 import {store, persistor} from './store';
+import "./style/main.css";
 
 class App extends Component {
     render() {
         return (
             <div className={'mainContent'}>
                 <Provider store={store}>
-                    <PersistGate loading={<div>loading</div>} persistor={persistor}>
+                    <PersistGate loading={null} persistor={persistor}>
                         <BrowserRouter>
                             <Switch>
-                                <Route props={this.props} path="/" exact component={CaptureId}/>
-                                <Route props={this.props} path="/back" exact component={BackId}/>
-                                <Route props={this.props} path="/selfie" exact component={Selfie}/>
-                                <Route props={this.props} path="/data" exact component={Data}/>
-                                <Route props={this.props} path="/error" exact component={Error}/>
+                                <Route path="/" exact component={CaptureId}/>
+                                <Route path="/back" exact component={BackId}/>
+                                <Route path="/selfie" exact component={Selfie}/>
+                                <Route path="/data" exact component={Data}/>
+                                <Route path="/error" exact component={Error}/>
                             </Switch>
                         </BrowserRouter>
                     </PersistGate>
