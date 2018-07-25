@@ -21,7 +21,7 @@ class Processing extends Component {
             if(this.props.orientation === 0){
                 ApiService.getClassification(instanceID)
                     .then(result => {
-                        if (result.type.Size === 0) {
+                        if (result.Type.Size === 0) {
                             this.setState({
                                 redirectTo: '/error'
                             })

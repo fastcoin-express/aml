@@ -83,24 +83,30 @@ class Selfie extends Component {
                                 }
                             });
 
-                            let type = res.Result || 2;
+                            let type = res.Result;
                             let idAuthentication = null;
 
                             switch (type) {
-                                case 2 :
+                                case 0 :
+                                    idAuthentication = 'Unknown';
+                                    break;
+                                case 1:
+                                    idAuthentication = 'Passed';
+                                    break;
+                                case 2:
                                     idAuthentication = 'Failed';
                                     break;
-                                case 3 :
+                                case 3:
                                     idAuthentication = 'Skipped';
                                     break;
-                                case 4 :
+                                case 4:
                                     idAuthentication = 'Caution';
                                     break;
-                                case 5 :
+                                case 5:
                                     idAuthentication = 'Attention';
                                     break;
                                 default:
-                                    idAuthentication = 'Passed';
+                                    idAuthentication = 'Unknown';
                                     break;
                             }
 
