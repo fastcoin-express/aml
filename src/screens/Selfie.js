@@ -83,12 +83,8 @@ class Selfie extends Component {
                                 }
                             });
 
-                            let type = 1;
+                            let type = res.Result || 2;
                             let idAuthentication = null;
-
-                            res.Alerts.map(alert => {
-                                if (alert.Result !== 1) type = alert.Result;
-                            });
 
                             switch (type) {
                                 case 2 :
