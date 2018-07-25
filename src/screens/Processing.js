@@ -21,10 +21,16 @@ class Processing extends Component {
             if(this.props.orientation === 0){
                 ApiService.getClassification(instanceID)
                     .then(result => {
-                        if(result.Type.Size !== 3){
+                        if (result.type.Size === 0) {
                             this.setState({
-                                redirectTo:'/back'
-                            });
+                                redirectTo: '/error'
+                            })
+                        } else {
+                            if (result.Type.Size !== 3) {
+                                this.setState({
+                                    redirectTo: '/back'
+                                });
+                            }
                         }
                     })
                     .catch(err => {
