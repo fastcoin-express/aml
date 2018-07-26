@@ -1,30 +1,31 @@
 import React, {Component} from 'react';
-import {Switch, Route, BrowserRouter} from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
+import { ConnectedRouter } from 'connected-react-router'
 import {PersistGate} from 'redux-persist/es/integration/react';
 import {Provider} from 'react-redux';
-import CaptureId from './screens/CaptureId';
-import BackId from './screens/BackId';
-import Selfie from './screens/Selfie';
-import Data from './screens/Data';
+import CaptureFrontID from './screens/CaptureFrontID';
+import CaptureBackID from './screens/CaptureBackID';
+import CaptureSelfie from './screens/CaptureSelfie';
+import Results from './screens/Results';
 import Error from './screens/Error';
-import {store, persistor} from './store';
 import "./style/main.css";
 
 class App extends Component {
     render() {
         return (
             <div className={'mainContent'}>
-                <Provider store={store}>
-                    <PersistGate loading={null} persistor={persistor}>
-                        <BrowserRouter>
+                <Provider store={this.props.store}>
+                    <PersistGate loading={null} persistor={this.props.persistor}>
+                        <ConnectedRouter history={this.props.routerHistory}>
                             <Switch>
-                                <Route path="/" exact component={CaptureId}/>
-                                <Route path="/back" exact component={BackId}/>
-                                <Route path="/selfie" exact component={Selfie}/>
-                                <Route path="/data" exact component={Data}/>
+                                <Redirect exact from="/" to="/capture/front"/>
+                                <Route path="/capture/front" exact component={CaptureFrontID}/>
+                                <Route path="/capture/back" exact component={CaptureBackID}/>
+                                <Route path="/capture/selfie" exact component={CaptureSelfie}/>
+                                <Route path="/results" exact component={Results}/>
                                 <Route path="/error" exact component={Error}/>
                             </Switch>
-                        </BrowserRouter>
+                        </ConnectedRouter>
                     </PersistGate>
                 </Provider>
             </div>

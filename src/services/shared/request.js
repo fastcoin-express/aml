@@ -19,10 +19,6 @@ const request = function(options, store) {
         return Promise.reject(error.response || error.message);
     };
 
-    if (!window.env.AUTH_TOKEN) {
-        return Promise.reject('NO AUTH TOKEN');
-    }
-
     let AUTH_TOKEN = btoa(`${window.env.USER_NAME}:${window.env.USER_PASSWORD}`);
 
     options.headers = {

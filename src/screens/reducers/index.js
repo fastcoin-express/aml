@@ -23,7 +23,6 @@ export function appReducer(state = {}, action) {
             };
         case "ADD_REDIRECT":
             return {
-                
                 instanceID: state.instanceID,
                 faceMatch: "",
                 resultData: null,

@@ -19,12 +19,10 @@ const request = function(options, store) {
         return Promise.reject(error.response || error.message);
     };
 
-    if (!window.env.AUTH_TOKEN) {
-        return Promise.reject('NO AUTH TOKEN');
-    }
+    let AUTH_TOKEN = btoa(`${window.env.USER_NAME}:${window.env.USER_PASSWORD}`);
 
     options.headers = {
-        "Authorization": `${window.env.AUTH_METHOD} ${window.env.AUTH_TOKEN}`,
+        "Authorization": `${window.env.AUTH_METHOD} ${AUTH_TOKEN}`,
         'Accept': 'application/json;charset=utf-8',
         'Content-Type': 'application/json;charset=utf-8',
     };

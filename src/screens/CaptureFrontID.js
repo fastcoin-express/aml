@@ -2,10 +2,10 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import Header from './Header';
 import ApiService from "../services/api/api";
-import Processing from "./Processing"
+import ProcessImage from "./ProcessImage"
 import {Redirect} from "react-router-dom";
 
-class CaptureId extends Component {
+class CaptureFrontID extends Component {
 
     constructor(props) {
         super(props);
@@ -56,7 +56,10 @@ class CaptureId extends Component {
             .catch(err => {
                 console.log(err);
             });
-        this.setState({processing: false}, () => {
+
+        this.setState({
+            processing: false
+        }, () => {
             this.textInput.current.click();
         });
     }
@@ -112,7 +115,6 @@ class CaptureId extends Component {
                             self.setState({loaded: true});
                         })
                         .catch(error => {
-                            self.props.dispatch({payload: 'front', type: 'ADD_REDIRECT'});
                             self.setState({error: true});
                         })
 
@@ -120,15 +122,13 @@ class CaptureId extends Component {
             } else {
                 alert('The File APIs are not fully supported in this browser.');
             }
-
-
         };
         reader.readAsDataURL(file.files[0]);
     }
 
     render() {
         if (this.state.error) return <Redirect to='/error'/>;
-        if (this.state.processing) return <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={0}/>;
+        if (this.state.processing) return <ProcessImage history={this.props.history} loaded={this.state.loaded} onRetry={this.onRetry} orientation={0}/>;
         return (
             <Fragment>
                 <Header />
@@ -158,4 +158,4 @@ const mapStateToProps = (state) => ({
     instanceID: state.appReducer.instanceID,
     redirect: state.redirect
 });
-export default connect(mapStateToProps)(CaptureId);
+export default connect(mapStateToProps)(CaptureFrontID);

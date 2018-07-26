@@ -2,10 +2,10 @@ import React, {Component, Fragment} from 'react';
 import {connect} from 'react-redux';
 import Header from './Header';
 import ApiService from "../services/api/api";
-import Processing from "./Processing"
+import ProcessImage from "./ProcessImage"
 import {Redirect} from "react-router-dom";
 
-class CaptureId extends Component {
+class CaptureBackID extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -110,7 +110,7 @@ class CaptureId extends Component {
     render() {
 
         if (this.state.error) return <Redirect to='/error'/>;
-        if (this.state.processing) return <Processing loaded={this.state.loaded} onRetry={this.onRetry} orientation={1}/>;
+        if (this.state.processing) return <ProcessImage history={this.props.history} loaded={this.state.loaded} onRetry={this.onRetry} orientation={1}/>;
         return (
             <Fragment>
                 <Header />
@@ -138,4 +138,4 @@ const mapStateToProps = (state) => ({
     instanceID: state.appReducer.instanceID,
     redirect: state.redirect
 });
-export default connect(mapStateToProps)(CaptureId);
+export default connect(mapStateToProps)(CaptureBackID);
