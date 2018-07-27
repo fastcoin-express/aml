@@ -10,7 +10,24 @@ import Results from './screens/Results';
 import Error from './screens/Error';
 import "./style/main.css";
 
+/*
+global Raven
+ */
+
 class App extends Component {
+
+    componentDidMount() {
+        if (process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID) {
+            Raven.config(process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID).install()
+        }
+    }
+
+    componentDidCatch(error, errorInfo) {
+        if (process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID) {
+            Raven.captureException(error, {extra: errorInfo});
+        }
+    }
+
     render() {
         return (
             <div className={'mainContent'}>
