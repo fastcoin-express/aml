@@ -25,6 +25,7 @@ Example: ```PORT=80 npm start``` will start the Application on the port ```:80``
 
 In general, React apps are static and built by running ```npm run build```. This will create the ```build``` directory inside the project's folder.
 You can upload the ```build``` folder via FTP, SSH or even sync it with any S3 Bucket.
+Remember to change the PUBLIC_URL env variable accordingly in .env file.
 
 ### Extra ###
 
