@@ -21,7 +21,7 @@ function getDocInstance() {
             "ImageCroppingMode": 3,
             "ManualDocumentType": null,
             "ProcessMode": 0,
-            "SubscriptionId": window.env.SUBSCRIPTION_ID
+            "SubscriptionId": process.env.REACT_APP_SUBSCRIPTION_ID
         }
     });
 }

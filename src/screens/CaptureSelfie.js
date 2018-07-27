@@ -62,14 +62,13 @@ class CaptureSelfie extends Component {
                 let dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
                 let selfie = dataurl.split(",")[1];
 
-                console.log(self.props);
                 FaceMatchService.processFaceMatch({
                     'Data': {
                         'ImageOne': self.props.resultData.Photo.split(',')[1],
                         'ImageTwo': selfie
                     },
                     'Settings': {
-                        'SubscriptionId': window.env.SUBSCRIPTION_ID
+                        'SubscriptionId': process.env.REACT_APP_SUBSCRIPTION_ID
                     }
                 }).then(res => {
                         self.props.dispatch({payload: res.Score, type: 'ADD_FACE_MATCH'});

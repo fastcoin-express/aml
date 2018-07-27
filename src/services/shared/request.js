@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const client = (() => {
     return axios.create({
-        baseURL: window.env.ID_SCAN_GO_API
+        baseURL: process.env.REACT_APP_ID_SCAN_GO_API
     });
 })();
 
@@ -19,10 +19,10 @@ const request = function(options, store) {
         return Promise.reject(error.response || error.message);
     };
 
-    let AUTH_TOKEN = btoa(`${window.env.USER_NAME}:${window.env.USER_PASSWORD}`);
+    let AUTH_TOKEN = btoa(`${process.env.REACT_APP_USER_NAME}:${process.env.REACT_APP_USER_PASSWORD}`);
 
     options.headers = {
-        "Authorization": `${window.env.AUTH_METHOD} ${AUTH_TOKEN}`,
+        "Authorization": `${process.env.REACT_APP_AUTH_METHOD} ${AUTH_TOKEN}`,
     };
 
     return client(options)
