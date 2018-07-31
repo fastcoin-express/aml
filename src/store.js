@@ -19,7 +19,7 @@ const initialState = {
     }
 };
 
-export const history = createHistory();
+export const history = createHistory({basename: process.env.REACT_APP_BASENAME});
 
 const config = {
     key: 'idscango',

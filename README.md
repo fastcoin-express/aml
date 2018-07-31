@@ -16,7 +16,28 @@ If you don't, please follow up [this link](https://nodejs.org/en/).
 * **Step 3** - run ```npm install```. This command will install all the required dependencies.
 * **Step 4** - run ```npm run start```. The project will start running on ```http://localhost:3000``` (default address).
 
-Inside the ```public``` folder there's a ```env.js``` config file. You will have to fill in ```AUTH_TOKEN``` and ```SUBSCRIPTION_ID``` fields with the data you received from Acuant.
+For setting up the app you have to explicitly set Environment variables in .env file that you can find in this folder.
+
+These are the available env vars that you'll find in the file. Please do not modify ```REACT_APP_ID_SCAN_GO_API``` and
+```REACT_APP_FACE_API``` unless you're told to do so.
+
+```
+PUBLIC_URL=https://acuantwebapps.com/idscangoweb/
+REACT_APP_BASENAME=/idscangoweb
+REACT_APP_ID_SCAN_GO_API=https://services.assureid.net
+REACT_APP_FACE_API=https://frm.acuant.net
+REACT_APP_AUTH_METHOD=Basic
+REACT_APP_USER_NAME=
+REACT_APP_USER_PASSWORD=
+REACT_APP_SUBSCRIPTION_ID=
+REACT_APP_SENTRY_SUBSCRIPTION_ID=
+```
+
+### \*IMPORTANT\* ###
+
+If you're deploying the App to a subfolder on the server, you need to explicitly set ```REACT_APP_BASENAME``` env var.
+Otherwise the app won't work. This applications uses virtual routes that are set by React Router. React Router assumes
+that the App will be available at the root of the domain.
 
 If you want to start the project on a different port, you can always add environment variables.
 Example: ```PORT=80 npm start``` will start the Application on the port ```:80```.
@@ -25,7 +46,8 @@ Example: ```PORT=80 npm start``` will start the Application on the port ```:80``
 
 In general, React apps are static and built by running ```npm run build```. This will create the ```build``` directory inside the project's folder.
 You can upload the ```build``` folder via FTP, SSH or even sync it with any S3 Bucket.
-Remember to change the PUBLIC_URL env variable accordingly in .env file.
+Remember to change the ```PUBLIC_URL``` and ```REACT_APP_BASENAME``` env variables accordingly in the .env file.
+
 
 ### Extra ###
 
