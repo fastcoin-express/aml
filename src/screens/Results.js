@@ -83,7 +83,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Date of Birth</p>
                                         <p className={'info'}>
-                                            {moment(parseInt(this.props.resultData['Birth Date'].match(/\d+/g)[0], 10)).format("DD-MM-YYYY")}
+                                            {moment(this.props.resultData['Birth Date'].match(/\-?\d+/g)[0]).format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
@@ -91,7 +91,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Expiration Date</p>
                                         <p className={'info'}>
-                                            {moment(parseInt(this.props.resultData['Expiration Date'].match(/\d+/g)[0], 10)).format("DD-MM-YYYY")}
+                                            {moment(this.props.resultData['Expiration Date'].match(/\-?\d+/g)[0]).format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
@@ -99,7 +99,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Issue Date</p>
                                         <p className={'info'}>
-                                            {moment(parseInt(this.props.resultData['Issue Date'].match(/\d+/g)[0], 10)).format("DD-MM-YYYY")}
+                                            {moment(this.props.resultData['Issue Date'].match(/\-?\d+/g)[0]).format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
