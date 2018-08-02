@@ -92,7 +92,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Date of Birth</p>
                                         <p className={'info'}>
-                                            {moment(this.processDate(this.props.resultData['Birth Date'])).format("DD-MM-YYYY")}
+                                            {moment(this.processDate(this.props.resultData['Birth Date'])).utc().format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
@@ -100,7 +100,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Expiration Date</p>
                                         <p className={'info'}>
-                                            {moment(this.processDate(this.props.resultData['Expiration Date'])).format("DD-MM-YYYY")}
+                                            {moment(this.processDate(this.props.resultData['Expiration Date'])).utc().format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
@@ -108,7 +108,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Issue Date</p>
                                         <p className={'info'}>
-                                            {moment(this.processDate(this.props.resultData['Issue Date'])).format("DD-MM-YYYY")}
+                                            {moment(this.processDate(this.props.resultData['Issue Date'])).utc().format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
