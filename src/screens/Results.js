@@ -22,6 +22,15 @@ class Results extends Component {
         }
     }
 
+    processDate(date) {
+        date = date.replace("Date", "");
+        date = date.replace(")", "");
+        date = date.replace("(", "");
+        date = date.split("/").join("");
+        date = date.split("+")[0];
+        return parseInt(date);
+    }
+
     render() {
         if (this.state.error) {
             return <Redirect to='/error'/>;
@@ -83,7 +92,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Date of Birth</p>
                                         <p className={'info'}>
-                                            {moment(this.props.resultData['Birth Date'].match(/\-?\d+/g)[0]).format("DD-MM-YYYY")}
+                                            {moment(this.processDate(this.props.resultData['Birth Date'])).format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
@@ -91,7 +100,7 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Expiration Date</p>
                                         <p className={'info'}>
-                                            {moment(this.props.resultData['Expiration Date'].match(/\-?\d+/g)[0]).format("DD-MM-YYYY")}
+                                            {moment(this.processDate(this.props.resultData['Expiration Date'])).format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
@@ -99,13 +108,13 @@ class Results extends Component {
                                     <li>
                                         <p className={'type'}>Issue Date</p>
                                         <p className={'info'}>
-                                            {moment(this.props.resultData['Issue Date'].match(/\-?\d+/g)[0]).format("DD-MM-YYYY")}
+                                            {moment(this.processDate(this.props.resultData['Issue Date'])).format("DD-MM-YYYY")}
                                         </p>
                                     </li>
                                 }
                             </ul>
                         </div>
-                        <a className={'buttonBg databuttton'} href={'/'}>
+                        <a className={'buttonBg databuttton'} href={process.env.REACT_APP_BASENAME}>
                             <p className={'buttonBgText'}>Home</p>
                         </a>
                     </div>

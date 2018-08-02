@@ -17,13 +17,13 @@ global Raven
 class App extends Component {
 
     componentDidMount() {
-        if (process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID) {
+        if (process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID && process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID.length > 0) {
             Raven.config(process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID).install()
         }
     }
 
     componentDidCatch(error, errorInfo) {
-        if (process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID) {
+        if (process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID && process.env.REACT_APP_SENTRY_SUBSCRIPTION_ID.length > 0) {
             Raven.captureException(error, {extra: errorInfo});
         }
     }
