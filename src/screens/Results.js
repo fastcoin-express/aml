@@ -114,7 +114,7 @@ class Results extends Component {
                                 }
                             </ul>
                         </div>
-                        <a className={'buttonBg databuttton'} href={"https://acuantwebapps.com/idscangoweb"}>
+                        <a className={'buttonBg databuttton'} onClick={() => this.props.history.push('/')}>
                             <p className={'buttonBgText'}>Home</p>
                         </a>
                     </div>
