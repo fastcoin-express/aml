@@ -62,7 +62,7 @@ class CaptureSelfie extends Component {
                 let dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
                 let selfie = dataurl.split(",")[1];
 
-                if (self.props.resultData.Photo.length > 0) {
+                if (self.props.resultData.Photo.split(',')[1] !== undefined) {
                     FaceMatchService.processFaceMatch({
                         'Data': {
                             'ImageOne': self.props.resultData.Photo.split(',')[1],
