@@ -114,7 +114,7 @@ class Results extends Component {
                                 }
                             </ul>
                         </div>
-                        <a className={'buttonBg databuttton'} href={process.env.PUBLIC_URL}>
+                        <a className={'buttonBg databuttton'} href={"https://acuantwebapps.com/idscangoweb"}>
                             <p className={'buttonBgText'}>Home</p>
                         </a>
                     </div>

@@ -12,13 +12,46 @@ class CaptureSelfie extends Component {
         super(props);
         this.state = {
             loading: false,
-            inputValue: ''
+            inputValue: '',
+            selfie: null
         };
     }
 
     componentDidMount() {
         let {instanceID} = this.props;
         this.props.processID(instanceID);
+    }
+
+    processSelfieAndRedirect() {
+        if (this.props.resultData !== null) {
+            if (this.props.resultData.Photo.split(',')[1] !== undefined) {
+                if (this.state.selfie !== null) {
+                    FaceMatchService.processFaceMatch({
+                        'Data': {
+                            'ImageOne': this.props.resultData.Photo.split(',')[1],
+                            'ImageTwo': this.state.selfie
+                        },
+                        'Settings': {
+                            'SubscriptionId': process.env.REACT_APP_SUBSCRIPTION_ID
+                        }
+                    }).then(res => {
+                        this.props.dispatch({payload: res.Score, type: 'ADD_FACE_MATCH'});
+                        this.props.history.push('/results');
+                    })
+                    .catch(err => {
+                        throw new Error(err);
+                    });
+                }
+            } else {
+                this.props.history.push('/results');
+            }
+        }
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.resultData !== this.props.resultData) {
+            this.processSelfieAndRedirect();
+        }
     }
 
     updateInputValue(evt) {
@@ -61,26 +94,12 @@ class CaptureSelfie extends Component {
 
                 let dataurl = canvas.toDataURL(file.files[0].type, 90 * .01);
                 let selfie = dataurl.split(",")[1];
-
-                if (self.props.resultData.Photo.split(',')[1] !== undefined) {
-                    FaceMatchService.processFaceMatch({
-                        'Data': {
-                            'ImageOne': self.props.resultData.Photo.split(',')[1],
-                            'ImageTwo': selfie
-                        },
-                        'Settings': {
-                            'SubscriptionId': process.env.REACT_APP_SUBSCRIPTION_ID
-                        }
-                    }).then(res => {
-                        self.props.dispatch({payload: res.Score, type: 'ADD_FACE_MATCH'});
-                        self.props.history.push('/results');
-                    })
-                        .catch(err => {
-                            throw new Error(err);
-                        });
-                } else {
-                    self.props.history.push('/results');
-                }
+                self.setState({
+                    selfie
+                }, () => {
+                    self.forceUpdate();
+                    self.processSelfieAndRedirect();
+                })
             };
 
         };
