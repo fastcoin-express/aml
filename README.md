@@ -33,6 +33,8 @@ REACT_APP_SUBSCRIPTION_ID=
 REACT_APP_SENTRY_SUBSCRIPTION_ID=
 ```
 
+```REACT_APP_SENTRY_SUBSCRIPTION_ID``` is optional.
+
 ### \*IMPORTANT\* ###
 
 If you're deploying the App to a subfolder on the server, you need to explicitly set ```REACT_APP_BASENAME``` env var.
