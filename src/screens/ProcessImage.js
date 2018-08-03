@@ -127,7 +127,7 @@ class ProcessImage extends Component {
                             />
                             <p className={'title'}> Image appears blurry.</p></div>
                         {!this.state.loading && this.state.cardImage && <img alt={'idscango'} src={this.state.cardImage} className={'image'}/>}
-                        <a className={'buttonBg'} href={this.state.redirectTo}>
+                        <a className={'buttonBg'} onClick={this.proceedToNextStep.bind(this)}>
                             <p className={'buttonBgText'}>Continue with this image</p>
                         </a>
                         {!this.props.orientation &&<div className={'buttonBd'} onClick={this.props.onRetry.bind(this)}>
