@@ -84,8 +84,7 @@ class Results extends Component {
                                         <p className={'info'}>{`${this.props.resultData['Address Line 1']}
                                         ${this.props.resultData['Address City']}
                                         ${this.props.resultData['Address State']}
-                                        ${this.props.resultData['Address Postal Code']}
-                                        ${this.props.resultData['Issuing State Code']}`}</p>
+                                        ${this.props.resultData['Address Postal Code']}`}</p>
                                     </li>
                                 }
                                 {this.props.resultData['Birth Date'] &&
