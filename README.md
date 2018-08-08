@@ -2,11 +2,6 @@
 
 ### Setup ###
 
-Supported OS Platforms:
-* Windows
-* OSX
-* Linux
-
 This project works well with **Node JS 6.10** and above. Please ensure that you have it installed.
 If you don't, please follow up [this link](https://nodejs.org/en/).
 
@@ -18,8 +13,7 @@ If you don't, please follow up [this link](https://nodejs.org/en/).
 
 For setting up the app you have to explicitly set Environment variables in .env file that you can find in this folder.
 
-These are the available env vars that you'll find in the file. Please do not modify ```REACT_APP_ID_SCAN_GO_API``` and
-```REACT_APP_FACE_API``` unless you're told to do so.
+These are the available environment variables that you'll find in the file. 
 
 ```
 PUBLIC_URL=https://acuantwebapps.com/idscangoweb/
@@ -34,10 +28,11 @@ REACT_APP_SENTRY_SUBSCRIPTION_ID=
 ```
 
 ```REACT_APP_SENTRY_SUBSCRIPTION_ID``` is optional.
+```PUBLIC_URL``` is the URL of your app.
 
 ### \*IMPORTANT\* ###
 
-If you're deploying the App to a subfolder on the server, you need to explicitly set ```REACT_APP_BASENAME``` env var.
+If you're deploying the App to a sub-folder on the server, you need to explicitly set ```REACT_APP_BASENAME``` env var.
 Otherwise the app won't work. This applications uses virtual routes that are set by React Router. React Router assumes
 that the App will be available at the root of the domain.
 
@@ -50,14 +45,3 @@ In general, React apps are static and built by running ```npm run build```. This
 You can upload the ```build``` folder via FTP, SSH or even sync it with any S3 Bucket.
 Remember to change the ```PUBLIC_URL``` and ```REACT_APP_BASENAME``` env variables accordingly in the .env file.
 
-
-### Extra ###
-
-I recommend having a ```deploy``` script inside the ```package.json``` file that will do the job for you.
-Example:
-
-```javascript
-"deploy": "npm run build; scp -r ./build root@server:/var/www/"
-```
-
-The above script will build the project and sync it with a server on your choice using the [scp](https://linux.die.net/man/1/scp) command.
