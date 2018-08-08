@@ -3,7 +3,7 @@
 ### Setup ###
 
 This project works well with **Node JS 6.10** and above. Please ensure that you have it installed.
-If you don't, please follow up [this link](https://nodejs.org/en/).
+If you don't, please follow up [this link](https://nodejs.org/en/download/current/).
 
 ### Installation and Running ###
 * **Step 1** - Start by downloading or cloning this repository
