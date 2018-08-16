@@ -1,4 +1,4 @@
-# Acuant idScanGo - Web #
+# Acuant idScanGo Web #
 
 ### Setup ###
 
@@ -45,3 +45,6 @@ In general, React apps are static and built by running ```npm run build```. This
 You can upload the ```build``` folder via FTP, SSH or even sync it with any S3 Bucket.
 Remember to change the ```PUBLIC_URL``` and ```REACT_APP_BASENAME``` env variables accordingly in the .env file.
 
+
+### idScan GO Web Workflow Diagram ###
+![](https://github.com/Acuant/HTML/blob/master/HTML_Workflow.png)
