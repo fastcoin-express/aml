@@ -3,7 +3,7 @@ import Header from './Header';
 import {connect} from "react-redux";
 import FaceMatchService from "../services/api/faceMatch";
 import {bindActionCreators} from "redux";
-import {processID} from "./actions";
+import {processID} from "./actions/processDataActions";
 import Processing from "./Processing";
 
 class CaptureSelfie extends Component {
@@ -35,15 +35,15 @@ class CaptureSelfie extends Component {
                             'SubscriptionId': process.env.REACT_APP_SUBSCRIPTION_ID
                         }
                     }).then(res => {
-                        this.props.dispatch({payload: res.Score, type: 'ADD_FACE_MATCH'});
-                        this.props.history.push('/results');
+                        this.props.dispatch({payload: res.Score, type: '@@acuant/ADD_FACE_MATCH_DATA'});
+                        this.props.history.push('/results/default');
                     })
                     .catch(err => {
                         throw new Error(err);
                     });
                 }
             } else {
-                this.props.history.push('/results');
+                this.props.history.push('/results/default');
             }
         }
     }
@@ -106,29 +106,50 @@ class CaptureSelfie extends Component {
     }
 
     render() {
+        if (this.state.loading) {
+            return <Processing/>
+        }
         return (
             <Fragment>
+
                 <Header />
-                {this.state.loading && <Processing/>}
-                {!this.state.loading &&
-                    <div className={'content'}>
-                        <p className={'title'}>Take a selfie image using the front camera of your device.</p>
-                        <img alt='idscango' className={'image'} src={require('../assets/images/illustration2@3x.png')}/>
-                        <input type="file"
-                               accept="image/*"
-                               capture="user"
-                               id="camera"
-                               className={'inputHidden'}
-                               onChange={this.updateInputValue.bind(this)}
-                        />
-                        <label htmlFor="camera" className={'buttonBg'}>
-                            <p className={'buttonBgText'}>Take selfie image</p>
-                        </label>
-                        <div className={'buttonBd'} onClick={() => {this.props.history.push('/results')}}>
-                            <p className={'buttonBdText'}>Skip this step</p>
-                        </div>
+
+                <div className='body column capture_photo'>
+
+                    <div className='row wrapper description_container'>
+                        <p className='description'>Take a selfie image using the front camera of your device.</p>
                     </div>
-                }
+                    
+                    <div className="capture_group">
+
+                        <div className='row wrapper capture_container'>
+
+                            <img alt='idscango' className='capture' src={require('../assets/images/illustration2@3x.png')}/>
+                            <input type="file"
+                                accept="image/*"
+                                capture="user"
+                                id="camera"
+                                className='hidden'
+                                onChange={this.updateInputValue.bind(this)}
+                            />
+
+                        </div>
+
+                        <div className="wrapper column capture_controls">
+
+                            <label htmlFor="camera" className='btn'>
+                                <p className={'buttonBgText'}>Take selfie image</p>
+                            </label>
+                            <div className='btn outline' onClick={() => {this.props.history.push('/results/default')}}>
+                                <p className={'buttonBdText'}>Skip this step</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
             </Fragment>
         );
     }
@@ -136,9 +157,9 @@ class CaptureSelfie extends Component {
 
 function mapStateToProps(state) {
     return {
-        instanceID: state.appReducer.instanceID,
-        faceMatch: state.appReducer.faceMatch,
-        resultData: state.appReducer.resultData
+        instanceID: state.config.instanceID,
+        faceMatch: state.processedData.faceMatch,
+        resultData: state.processedData.result
     }
 }
 

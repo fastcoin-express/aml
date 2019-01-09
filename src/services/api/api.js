@@ -10,7 +10,7 @@ function getDocInstance() {
             "Device": {
                 "HasContactlessChipReader": false,
                 "HasMagneticStripeReader": false,
-                "SerialNumber": "xxx",
+                "SerialNumber": "STRICT",
                 "Type": {
                     "Manufacturer": "xxx",
                     "Model": "xxx",
@@ -24,6 +24,22 @@ function getDocInstance() {
             "SubscriptionId": process.env.REACT_APP_SUBSCRIPTION_ID
         }
     });
+}
+
+function postImage(instanceID, side, file) {
+    return request({
+        url: `/AssureIDService/Document/${instanceID}/Image?side=${side}&light=0&metrics=true`,
+        method: 'POST',
+        data: file
+    })
+}
+
+function replaceImage(instanceID, side, file) {
+    return request({
+        url: `/AssureIDService/Document/${instanceID}/Image?side=${side}&light=0&metrics=true`,
+        method: 'PUT',
+        data: file
+    })
 }
 
 function postFrontImage(instanceID, file) {
@@ -80,10 +96,17 @@ function getSignatureImage(instanceID) {
     });
 }
 
+/**
+ * TODO!!!!
+ * instance id will fail if you already called this !!!
+ * @param instanceID
+ * @returns {*}
+ */
 function getResults(instanceID) {
     return request({
         url: '/AssureIDService/Document/' + instanceID,
         method: 'GET',
+        xml: true
     });
 }
 
@@ -97,7 +120,9 @@ const ApiService = {
     getImageQualityMetric,
     getFaceImage,
     getResults,
-    getSignatureImage
+    getSignatureImage,
+    postImage,
+    replaceImage
 };
 
 export default ApiService;

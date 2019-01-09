@@ -5,7 +5,7 @@ import axios from 'axios'
 
 const client = (() => {
     return axios.create({
-        baseURL: process.env.REACT_APP_FACE_API
+        baseURL: process.env.REACT_APP_FRM_ENDPOINT
     });
 })();
 
@@ -19,13 +19,20 @@ const request = function(options, store) {
         return Promise.reject(error.response || error.message);
     };
 
-    let AUTH_TOKEN = btoa(`${process.env.REACT_APP_USER_NAME}:${process.env.REACT_APP_USER_PASSWORD}`);
-
-    options.headers = {
-        "Authorization": `${process.env.REACT_APP_AUTH_METHOD} ${AUTH_TOKEN}`,
-        'Accept': 'application/json;charset=utf-8',
-        'Content-Type': 'application/json;charset=utf-8',
-    };
+    if (process.env.NODE_ENV === 'development') {
+        let AUTH_TOKEN = btoa(`${process.env.REACT_APP_USER_NAME}:${process.env.REACT_APP_PASSWORD}`);
+        options.headers = {
+            "Authorization": `Basic ${AUTH_TOKEN}`,
+            'Accept': 'application/json;charset=utf-8',
+            'Content-Type': 'application/json;charset=utf-8',
+        };
+    } else {
+        options.headers = {
+            "Authorization": `Basic ${process.env.REACT_APP_AUTH_TOKEN}`,
+            'Accept': 'application/json;charset=utf-8',
+            'Content-Type': 'application/json;charset=utf-8',
+        };
+    }
 
     return client(options)
         .then(onSuccess)

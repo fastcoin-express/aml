@@ -23,10 +23,16 @@ export function appReducer(state = {}, action) {
             };
         case "ADD_REDIRECT":
             return {
+                ...state,
                 instanceID: state.instanceID,
                 faceMatch: "",
                 resultData: null,
                 redirect: action.payload,
+            };
+        case "@@acuant/SET_ID_TYPE":
+            return {
+                ...state,
+                cardType: action.data
             };
         default:
             return state;

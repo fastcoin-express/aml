@@ -11,11 +11,23 @@ const loggerMiddleWare = store => next => action => {
     next(action);
 };
 
+/**
+ * cardType: 1 for ID/Passport, 2 for Medicard
+ */
 const initialState = {
-    appReducer: {
+    config: {
         instanceID: null,
+        frontSubmitted: false,
+        backSubmitted: false
+    },
+    processedData: {
         faceMatch: null,
-        resultData: null
+        result: null
+    },
+    idProperties: {
+        cardType: 0,
+        orientation: 0,
+        sidesLeft: 2
     }
 };
 
@@ -24,7 +36,7 @@ export const history = createHistory({basename: process.env.REACT_APP_BASENAME})
 const config = {
     key: 'idscango',
     storage,
-    whitelist: 'appReducer'
+    blacklist: ['config', 'processedData', 'idProperties']
 };
 
 const reducer = persistCombineReducers(config, rootReducer);
