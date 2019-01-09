@@ -98,14 +98,14 @@ class IDPassport extends Component {
                                 {this.props.resultData['Address'] &&
                                 <div className='row'>
                                     <div className='type'>Address</div>
-                                    <div className='data'>{this.props.resultData['Address']}</div>
+                                    <div className='data'>{this.props.resultData['Address'].replace(/[\u2028]/g,' ')}</div>
                                 </div>
                                 }
                                 {this.props.resultData['Birth Date'] &&
                                 <div className='row'>
                                     <div className='type'>Date of Birth</div>
                                     <div className='data'>
-                                        {moment(this.props.resultData['Birth Date']).utc().format("MM-DD-YYYY")}
+                                        {moment(this.processDate(this.props.resultData['Birth Date'])).utc().format("MM-DD-YYYY")}
                                     </div>
                                 </div>
                                 }
@@ -113,7 +113,7 @@ class IDPassport extends Component {
                                 <div className='row'>
                                     <div className='type'>Expiration Date</div>
                                     <div className='data'>
-                                        {moment(this.props.resultData['Expiration Date']).utc().format("MM-DD-YYYY")}
+                                        {moment(this.processDate(this.props.resultData['Expiration Date'])).utc().format("MM-DD-YYYY")}
                                     </div>
                                 </div>
                                 }
@@ -121,7 +121,7 @@ class IDPassport extends Component {
                                 <div className='row'>
                                     <div className='type'>Issue Date</div>
                                     <div className='data'>
-                                        {moment(this.props.resultData['Issue Date']).utc().format("MM-DD-YYYY")}
+                                        {moment(this.processDate(this.props.resultData['Issue Date'])).utc().format("MM-DD-YYYY")}
                                     </div>
                                 </div>
                                 }

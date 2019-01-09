@@ -30,13 +30,6 @@ const request = function(options, store) {
         };
     }
 
-    if (options.xml) {
-        options.headers = {
-            ...options.headers,
-            'Accept': 'text/html',
-        }
-    }
-
     return client(options)
         .then(onSuccess)
         .catch(onError);

@@ -105,8 +105,7 @@ function getSignatureImage(instanceID) {
 function getResults(instanceID) {
     return request({
         url: '/AssureIDService/Document/' + instanceID,
-        method: 'GET',
-        xml: true
+        method: 'GET'
     });
 }
 
