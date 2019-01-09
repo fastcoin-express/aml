@@ -56,4 +56,4 @@ Remember to change the ```PUBLIC_URL``` and ```REACT_APP_BASENAME``` env variabl
 
 
 ### Worklflow Diagram ###
-(https://github.com/Acuant/HTML/blob/master/HTML_Workflow.png)
+![](https://github.com/Acuant/HTML/blob/master/HTML_Workflow.png)
