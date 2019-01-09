@@ -32,7 +32,7 @@ REACT_APP_SENTRY_SUBSCRIPTION_ID=
 
 ```
 
-```PUBLIC_URL``` is the URL of your app. For e.g. https://acuantwebapps.com/idscangoweb/
+```PUBLIC_URL``` is the URL of your app. For e.g. https://idscangoweb.acuant.com
 ```REACT_APP_FRM_ENABLED``` - set this to true if you want to enable Facial Recognition Match
 ```REACT_APP_IDPASSPORT_ENABLED``` - Set this to true if you would like to enable ID and Passport option
 ```REACT_APP_MEDICAL_CARD_ENABLED``` - Set this to true if you would like to enable Medical Insurance Card option
