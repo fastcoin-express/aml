@@ -44,9 +44,7 @@ REACT_APP_SENTRY_SUBSCRIPTION_ID=
 
 ### \*IMPORTANT\* ###
 
-If you're deploying the App to a sub-folder on the server (For e.g. IIS on a Windows Server), you need to explicitly set ```BASENAME``` environment variable otherwise the app won't work. This applications uses virtual routes that are set by React Router. React Router assumes that the App will be available at the root of the domain.
-If you’re delivering the app from a subfolder (eg: domain.com/idscango) you should set the basename to that subfolder path (in this case: /idscango). Otherwise, if it’s delivered from the root domain, basename should be “/“. 
-
+If you're deploying the App to a sub-folder on the server (For e.g. IIS on a Windows Server), you need to explicitly set BASENAME environment variable otherwise the app won't work. This applications uses virtual routes that are set by React Router. React Router assumes that the App will be available at the root of the domain. If you’re delivering the app from a subfolder in IIS (you created a folder under Default WebSite in IIS for the app) you should set the basename to that subfolder name (For e.g. if the sub-folder name in IIS is idscangoweb, so basename value would be "/idscangoweb"). Otherwise, if it’s delivered from the root domain, basename should be “/“.
 
 ### Building for deployment ###
 
