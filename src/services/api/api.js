@@ -10,7 +10,7 @@ function getDocInstance() {
             "Device": {
                 "HasContactlessChipReader": false,
                 "HasMagneticStripeReader": false,
-                "SerialNumber": "STRICT",
+                "SerialNumber": "",
                 "Type": {
                     "Manufacturer": "xxx",
                     "Model": "xxx",
