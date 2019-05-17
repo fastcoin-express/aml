@@ -1,4 +1,5 @@
 import axios from 'axios'
+import axiosRetry from 'axios-retry';
 /*
  global window
  */
@@ -8,6 +9,8 @@ const client = (() => {
         baseURL: process.env.REACT_APP_ID_ENDPOINT
     });
 })();
+
+axiosRetry(client, { retries: 3 });
 
 const request = function(options, store) {
     const onSuccess = function(response) {

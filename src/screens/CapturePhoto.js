@@ -301,6 +301,7 @@ class CapturePhoto extends Component {
                             }
 
                             <input type="file" accept="image/*" capture="environment" id="camera"
+                                   name={'camera'}
                                 value={this.state.inputValue}
                                 className='hidden'
                                 onChange={this.processImage.bind(this)}

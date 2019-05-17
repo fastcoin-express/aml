@@ -128,6 +128,7 @@ class CaptureSelfie extends Component {
                             <input type="file"
                                 accept="image/*"
                                 capture="user"
+                                   name={'camera'}
                                 id="camera"
                                 className='hidden'
                                 onChange={this.updateInputValue.bind(this)}
