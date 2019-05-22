@@ -199,14 +199,14 @@ class CapturePhoto extends Component {
 
                     let canvas = document.createElement('canvas'),
                         context = canvas.getContext('2d'),
-                        MAX_WIDTH = 3032,
-                        MAX_HEIGHT = 2008,
+                     //   MAX_WIDTH = 3032,
+                      //  MAX_HEIGHT = 2008,
                         width = image.width,
                         height = image.height;
 
                     //   context.drawImage(image, 0, 0);
 
-                    var largerDimension = width > height ? width : height;
+                   /* var largerDimension = width > height ? width : height;
 
                     if (largerDimension > MAX_WIDTH) {
                         if (width < height) {
@@ -221,10 +221,13 @@ class CapturePhoto extends Component {
                     } else {
                         MAX_WIDTH = image.width;
                         MAX_HEIGHT = image.height;
-                    }
+                    } */
 
-                    canvas.width = MAX_WIDTH;
-                    canvas.height = MAX_HEIGHT;
+                  //  canvas.width = MAX_WIDTH;
+                   // canvas.height = MAX_HEIGHT;
+
+                    canvas.width = width;
+                    canvas.height = height;
 
                     context = canvas.getContext('2d');
                     context.mozImageSmoothingEnabled = false;
@@ -232,7 +235,8 @@ class CapturePhoto extends Component {
                     context.msImageSmoothingEnabled = false;
                     context.imageSmoothingEnabled = false;
 
-                    context.drawImage(image, 0, 0, MAX_WIDTH, MAX_HEIGHT);
+               //     context.drawImage(image, 0, 0, MAX_WIDTH, MAX_HEIGHT);
+                     context.drawImage(image, 0, 0, width, height);
 
                     let canvasToDataURL = canvas.toDataURL(file.files[0].type, 90 * .01);
                     let blobData = this.dataURLToBlob(canvasToDataURL);
